@@ -3,6 +3,7 @@ package com.dpk.rxtrofit
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import rx.Subscriber
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,8 +11,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Example of a call to a native method
-        sample_text.text = stringFromJNI()
+
+        HttpMethod.httpMethod.getTopMovie(1,1,object :Subscriber<List<Subject>>(){
+            override fun onNext(t: List<Subject>?) {
+                sample_text.text =t?.get(0)?.originalTitle
+            }
+
+            override fun onCompleted() {
+            }
+
+            override fun onError(e: Throwable?) {
+            }
+
+        })
+
     }
 
     /**
